@@ -1,16 +1,59 @@
-# React + Vite
+# React Expense Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern expense tracker built with React and Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Add expenses with a controlled form and validation
+- Track name, amount, category, and paid/unpaid status
+- Expense history rendered with `.map()` and delete/toggle actions
+- Category filter on the History page (All / Food / Travel / Shopping / Bills)
+- Running total displayed in the header
+- `localStorage` persistence with lazy initialization
+- Dashboard chart built with `recharts`
+- Dark / light theme toggle
+- Client-side routing between `/dashboard` and `/history` using React Router
 
-## React Compiler
+## Project structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/App.jsx` — app state and routes
+- `src/components/Header.jsx` — total display, navigation, theme toggle
+- `src/components/ExpenseForm.jsx` — controlled add expense form
+- `src/components/FilterBar.jsx` — category filter buttons
+- `src/components/ExpenseList.jsx` — list rendering
+- `src/components/ExpenseItem.jsx` — single expense row
+- `src/components/ExpenseChart.jsx` — category breakdown pie chart
+- `src/pages/Dashboard.jsx` — dashboard view (chart + form)
+- `src/pages/History.jsx` — history view (filter + list)
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+## Notes
+
+- The app uses `crypto.randomUUID()` for safe unique IDs.
+- The dashboard shows the chart and form in the same row with equal-height cards.
+- The history page hosts the compact filter UI above the expense list.
