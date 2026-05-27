@@ -24,6 +24,7 @@
   padding: 0;
   display: grid;
   gap: 14px;
+  margin-top: 12px;
 }
 
 .empty-state {

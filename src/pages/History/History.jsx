@@ -6,7 +6,7 @@ function History({ expenses, categories, filter, setFilter, togglePaid, deleteEx
   const filtered = filter === 'all' ? expenses : expenses.filter((e) => e.category === filter)
 
   return (
-    <div>
+    <div style={{ marginTop: 16 }}>
       <section className="card">
         <h2>All expenses</h2>
         <p className="chart-subtitle">Complete history of your spending</p>

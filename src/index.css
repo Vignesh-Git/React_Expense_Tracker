@@ -43,6 +43,7 @@ body,
 
 body {
   margin: 0;
+  background: var(--bg);
 }
 
 a {
@@ -67,9 +68,6 @@ p {
   margin: 0;
 }
 
-body {
-  background: var(--bg);
-}
 
 #root {
   min-height: 100vh;
