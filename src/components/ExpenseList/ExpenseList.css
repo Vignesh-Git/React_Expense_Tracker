@@ -1,0 +1,50 @@
+.expense-list-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+  margin-top: 24px;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+  animation: popIn 240ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.expense-list-card:hover {
+  transform: translateY(-6px);
+  box-shadow: rgba(2, 6, 23, 0.12) 0 20px 40px;
+}
+
+.expense-list-card h2 {
+  margin-top: 0;
+}
+
+.expense-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.empty-state {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+@keyframes popIn {
+  from {
+    transform: translateY(8px) scale(0.995);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expense-list-card {
+    animation: none !important;
+    transition: none !important;
+  }
+}

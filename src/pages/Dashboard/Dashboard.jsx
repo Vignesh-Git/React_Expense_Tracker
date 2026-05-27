@@ -1,5 +1,6 @@
-import ExpenseChart from '../components/ExpenseChart.jsx'
-import ExpenseForm from '../components/ExpenseForm.jsx'
+import ExpenseChart from '../../components/ExpenseChart'
+import ExpenseForm from '../../components/ExpenseForm'
+import './Dashboard.css'
 
 function Dashboard({ expenses, categories, addExpense }) {
   return (

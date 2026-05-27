@@ -1,4 +1,5 @@
-import ExpenseItem from './ExpenseItem.jsx'
+import ExpenseItem from '../ExpenseItem'
+import './ExpenseList.css'
 
 function ExpenseList({ expenses, onTogglePaid, onDelete }) {
   if (expenses.length === 0) {

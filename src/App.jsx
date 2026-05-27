@@ -1,13 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
-import Header from './components/Header.jsx'
-import ExpenseChart from './components/ExpenseChart.jsx'
-import ExpenseForm from './components/ExpenseForm.jsx'
-import FilterBar from './components/FilterBar.jsx'
-import ExpenseList from './components/ExpenseList.jsx'
-import Dashboard from './pages/Dashboard.jsx'
-import History from './pages/History.jsx'
+import Header from './components/Header'
+import Dashboard from './pages/Dashboard'
+import History from './pages/History'
 
 const categories = ['Food', 'Travel', 'Shopping', 'Bills']
 
@@ -52,14 +48,6 @@ function App() {
       ),
     )
   }
-
-  const filteredExpenses = useMemo(
-    () =>
-      filter === 'all'
-        ? expenses
-        : expenses.filter((expense) => expense.category === filter),
-    [expenses, filter],
-  )
 
   const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0)
 

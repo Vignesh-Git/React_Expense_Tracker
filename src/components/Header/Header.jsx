@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import './Header.css'
 
 function Header({ total, count, theme, onToggleTheme }) {
   return (

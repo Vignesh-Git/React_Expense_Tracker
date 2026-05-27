@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import './ExpenseChart.css'
 
 const categoryColors = {
   Food: '#a78bfa',

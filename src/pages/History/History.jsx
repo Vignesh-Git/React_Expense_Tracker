@@ -1,5 +1,6 @@
-import ExpenseList from '../components/ExpenseList.jsx'
-import FilterBar from '../components/FilterBar.jsx'
+import ExpenseList from '../../components/ExpenseList'
+import FilterBar from '../../components/FilterBar'
+import './History.css'
 
 function History({ expenses, categories, filter, setFilter, togglePaid, deleteExpense }) {
   const filtered = filter === 'all' ? expenses : expenses.filter((e) => e.category === filter)

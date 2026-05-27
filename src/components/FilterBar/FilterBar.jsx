@@ -1,3 +1,5 @@
+import './FilterBar.css'
+
 function FilterBar({ categories, activeFilter, onFilterChange }) {
   return (
     <section className="card filter-card">

@@ -1,0 +1,43 @@
+/* Compact single-row filter for History page */
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-top: 16px;
+}
+
+.filter-row.card {
+  box-shadow: var(--shadow);
+}
+
+.filter-row .filter-card {
+  box-shadow: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background: transparent;
+  animation: none;
+}
+
+.filter-row .filter-card h2 {
+  display: none;
+}
+
+.filter-row .filter-buttons {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  grid-template-columns: unset;
+}
+
+@media (max-width: 620px) {
+  .filter-row {
+    flex-wrap: wrap;
+  }
+
+  .filter-row .filter-buttons {
+    flex-wrap: wrap;
+  }
+}

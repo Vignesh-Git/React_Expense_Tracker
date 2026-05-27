@@ -1,3 +1,5 @@
+import './ExpenseItem.css'
+
 function ExpenseItem({ expense, onTogglePaid, onDelete }) {
   const { id, name, amount, category, paid } = expense
 

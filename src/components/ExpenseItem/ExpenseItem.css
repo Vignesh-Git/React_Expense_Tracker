@@ -1,0 +1,106 @@
+.expense-item {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  animation: slideUpFade 260ms ease both;
+}
+
+.expense-name {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.expense-category {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.expense-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  justify-content: end;
+}
+
+.expense-amount {
+  font-weight: 700;
+}
+
+.badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge.paid {
+  background: #d4f5e8;
+  color: #107048;
+}
+
+.badge.unpaid {
+  background: #fce8e7;
+  color: #9a1f20;
+}
+
+.expense-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.secondary-button,
+.danger-button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  border-radius: 999px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+  will-change: transform;
+}
+
+.secondary-button {
+  padding: 10px 18px;
+  background: var(--button-bg);
+  color: var(--text-h);
+}
+
+.danger-button {
+  padding: 10px 18px;
+  background: #f5e9ea;
+  color: #9a1f20;
+}
+
+.secondary-button:hover,
+.danger-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+@keyframes slideUpFade {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expense-item {
+    animation: none !important;
+  }
+}

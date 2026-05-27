@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './ExpenseForm.css'
 
 function ExpenseForm({ categories, onAdd }) {
   const [name, setName] = useState('')
