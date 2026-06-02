@@ -21,7 +21,13 @@ function ExpenseForm({ categories, onAdd }) {
       return
     }
 
-    onAdd({ name: name.trim(), amount: parsedAmount, category, paid: false })
+    onAdd({
+      name: name.trim(),
+      amount: parsedAmount,
+      category,
+      paid: false,
+      date: new Date().toISOString().slice(0, 10),
+    })
     setName('')
     setAmount('')
     setCategory(categories[0] ?? '')

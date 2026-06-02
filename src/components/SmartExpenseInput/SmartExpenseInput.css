@@ -1,0 +1,260 @@
+.smart-expense-card {
+  margin-top: 16px;
+  animation: popIn 240ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.smart-expense-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.smart-expense-header h2 {
+  margin-bottom: 6px;
+}
+
+.chart-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.smart-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.smart-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 72px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.smart-add-button {
+  white-space: nowrap;
+  align-self: stretch;
+}
+
+.smart-add-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.voice-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.voice-button:hover {
+  transform: translateY(-1px);
+}
+
+.voice-button.listening {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  border-color: rgba(239, 68, 68, 0.35);
+  animation: voiceGlow 1.2s ease-in-out infinite;
+}
+
+.voice-icon {
+  font-size: 1rem;
+}
+
+.voice-unsupported {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  max-width: 140px;
+  text-align: right;
+}
+
+.voice-live {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 0;
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.voice-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: voicePulse 1s ease infinite;
+}
+
+.nlp-preview {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px dashed var(--border);
+  background: var(--accent-bg);
+}
+
+.nlp-preview-title {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.nlp-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.nlp-preview-grid dt {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.nlp-preview-grid dd {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.nlp-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nlp-hints li {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+
+.voice-examples {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.examples-toggle {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.examples-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.example-chip {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--bg);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.example-chip:hover {
+  transform: translateX(4px);
+  border-color: var(--accent);
+}
+
+.example-label {
+  display: block;
+  font-weight: 700;
+  color: var(--text-h);
+  margin-bottom: 4px;
+}
+
+.example-phrase {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes voiceGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
+@keyframes voicePulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+@media (max-width: 700px) {
+  .smart-input-row {
+    grid-template-columns: 1fr;
+  }
+
+  .smart-add-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smart-expense-card,
+  .voice-button.listening,
+  .voice-pulse {
+    animation: none;
+  }
+}

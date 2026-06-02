@@ -1,14 +1,18 @@
 import ExpenseChart from '../../components/ExpenseChart'
 import ExpenseForm from '../../components/ExpenseForm'
+import SmartExpenseInput from '../../components/SmartExpenseInput'
 import './Dashboard.css'
 
 function Dashboard({ expenses, categories, addExpense }) {
   return (
-    <div className="dashboard-row">
-      <ExpenseChart expenses={expenses} />
+    <>
+      <SmartExpenseInput categories={categories} onAdd={addExpense} />
 
-      <ExpenseForm categories={categories} onAdd={addExpense} />
-    </div>
+      <div className="dashboard-row">
+        <ExpenseChart expenses={expenses} />
+        <ExpenseForm categories={categories} onAdd={addExpense} />
+      </div>
+    </>
   )
 }
 

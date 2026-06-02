@@ -1,8 +1,9 @@
 .header-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+  flex-wrap: wrap;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -25,10 +26,80 @@
   font-size: 0.85rem;
 }
 
+.header-greeting {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
 .header-controls {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  max-width: 220px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), #22c55e);
+  flex-shrink: 0;
+}
+
+.user-details {
+  min-width: 0;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-h);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sign-out-button {
+  border: 1px solid var(--border);
+  background: var(--button-bg);
+  color: var(--text-h);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.sign-out-button:hover {
+  transform: translateY(-1px);
+  background: var(--card-bg);
 }
 
 .nav-links {
@@ -92,6 +163,18 @@
   to {
     transform: translateY(0) scale(1);
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-details {
+    display: none;
+  }
+
+  .user-menu {
+    padding: 6px;
+    border: none;
+    background: transparent;
   }
 }
 
