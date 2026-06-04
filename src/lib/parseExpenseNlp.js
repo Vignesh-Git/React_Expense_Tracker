@@ -279,15 +279,23 @@ function extractDate(text) {
 
 function scoreCategory(text, category, keywords) {
   let score = 0
+  const categoryName = category.toLowerCase()
+  if (text.includes(categoryName)) score += categoryName.includes(' ') ? 3 : 2
+
   for (const keyword of keywords) {
     if (text.includes(keyword)) score += keyword.includes(' ') ? 2 : 1
   }
   return score
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 function inferCategory(text, categories) {
+  const categoryPattern = categories.map((category) => escapeRegExp(category)).join('|')
   const explicit = text.match(
-    /\b(?:category|under|in|type)\s+(food|travel|shopping|bills)\b/i,
+    new RegExp(`\\b(?:category|under|in|type)\\s+(${categoryPattern})\\b`, 'i'),
   )
   if (explicit) {
     const value = explicit[1].toLowerCase()
@@ -325,7 +333,7 @@ function buildName(originalText, amount, category) {
   }
 
   name = name.replace(/\b(?:yesterday|today|last week|a week ago|just now)\b/gi, ' ')
-  name = name.replace(/\b(?:category|under|in|type)\s+(?:food|travel|shopping|bills)\b/gi, ' ')
+  name = name.replace(new RegExp(`\\b(?:category|under|in|type)\\s+${escapeRegExp(category)}\\b`, 'gi'), ' ')
   name = name.replace(FILLER_PATTERN, ' ')
   name = name.replace(/\s+/g, ' ').trim()
 
@@ -350,6 +358,7 @@ export function parseExpenseNlp(text, categories = ['Food', 'Travel', 'Shopping'
     return { ok: false, error: 'Say or type an expense to parse.' }
   }
 
+  const safeCategories = categories.length > 0 ? categories : ['Food']
   const lower = raw.toLowerCase()
   const amount = extractAmount(raw)
 
@@ -360,7 +369,7 @@ export function parseExpenseNlp(text, categories = ['Food', 'Travel', 'Shopping'
     }
   }
 
-  const category = inferCategory(lower, categories)
+  const category = inferCategory(lower, safeCategories)
   const name = buildName(raw, amount, category)
   const date = extractDate(lower)
   const paid = detectPaid(lower)

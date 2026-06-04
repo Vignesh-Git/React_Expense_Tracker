@@ -12,13 +12,96 @@
   animation: popIn 240ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
 }
 
-.expense-form-card:hover {
-  transform: translateY(-6px);
-  box-shadow: rgba(2, 6, 23, 0.12) 0 20px 40px;
+@media (hover: hover) {
+  .expense-form-card:hover {
+    transform: translateY(-6px);
+    box-shadow: rgba(2, 6, 23, 0.12) 0 20px 40px;
+  }
 }
 
-.expense-form-card h2 {
-  margin-top: 0;
+.expense-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.expense-form-header h2 {
+  margin: 0;
+  flex: 1;
+}
+
+.expense-assist-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bill-upload-input {
+  display: none;
+}
+
+.assist-trigger {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--accent-bg);
+  color: var(--accent);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.assist-trigger:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: var(--shadow);
+}
+
+.assist-trigger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.assist-trigger.listening,
+.assist-trigger.processing {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  border-color: rgba(239, 68, 68, 0.35);
+  animation: voiceTriggerPulse 1.2s ease-in-out infinite;
+}
+
+.assist-trigger.processing {
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--accent);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.assist-trigger-icon {
+  display: block;
+}
+
+.voice-listening-hint {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.voice-inline-error {
+  margin: 0 0 12px;
+}
+
+@keyframes voiceTriggerPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
 }
 
 .expense-form {
@@ -93,5 +176,20 @@
 @media (max-width: 900px) {
   .expense-form-card {
     height: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .expense-form-header {
+    align-items: flex-start;
+  }
+
+  .expense-assist-actions {
+    gap: 6px;
+  }
+
+  .assist-trigger {
+    width: 40px;
+    height: 40px;
   }
 }

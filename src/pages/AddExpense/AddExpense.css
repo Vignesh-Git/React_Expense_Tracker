@@ -1,0 +1,49 @@
+.add-expense-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add-expense-hero {
+  display: grid;
+  gap: 8px;
+}
+
+.add-expense-eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.add-expense-hero h1 {
+  margin: 0 0 6px;
+  color: var(--text-h);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1.1;
+}
+
+.add-expense-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.add-expense-grid .card {
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  .add-expense-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .add-expense-grid .card {
+    min-height: auto;
+  }
+}

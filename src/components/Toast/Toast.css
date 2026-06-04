@@ -1,0 +1,49 @@
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card-bg);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.toast p {
+  margin: 0;
+  color: var(--text-h);
+  font-weight: 650;
+}
+
+.toast button {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 10px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.toast .toast-close {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--button-bg);
+  color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+  .toast {
+    right: 16px;
+    left: 16px;
+    bottom: calc(var(--bottom-nav-height) + 16px + env(safe-area-inset-bottom));
+  }
+}

@@ -1,24 +1,5 @@
-/* Dashboard row: chart and form side-by-side with equal height cards */
-.dashboard-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  align-items: stretch;
-  margin-top: 16px;
-}
-
-.dashboard-row .card {
-  height: 460px;
+.dashboard-page {
   display: flex;
   flex-direction: column;
-}
-
-@media (max-width: 900px) {
-  .dashboard-row {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-row .card {
-    height: auto;
-  }
+  gap: 16px;
 }

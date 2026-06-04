@@ -1,4 +1,8 @@
-import "./ExpenseItem.css";
+import { useState } from 'react'
+import ConfirmationDialog from '../ConfirmationDialog'
+import ExpenseEditDialog from '../ExpenseEditDialog'
+import { formatCurrency } from '../../lib/currency.js'
+import './ExpenseItem.css'
 
 function formatExpenseDate(isoDate) {
   try {
@@ -11,8 +15,10 @@ function formatExpenseDate(isoDate) {
   }
 }
 
-function ExpenseItem({ expense, onTogglePaid, onDelete }) {
-  const { id, name, amount, category, paid, date } = expense;
+function ExpenseItem({ expense, categories, currencyCode, onTogglePaid, onDelete, onUpdate }) {
+  const { id, name, amount, category, paid, date } = expense
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
 
   return (
     <li className="expense-item">
@@ -25,28 +31,48 @@ function ExpenseItem({ expense, onTogglePaid, onDelete }) {
       </div>
 
       <div className="expense-meta">
-        <span className="expense-amount">${amount.toFixed(2)}</span>
+        <span className="expense-amount">{formatCurrency(amount, currencyCode)}</span>
       </div>
 
       <div className="expense-actions">
+        <button type="button" onClick={() => setEditOpen(true)} className="secondary-button">
+          Edit
+        </button>
         <button
           type="button"
           onClick={() => onTogglePaid(id)}
           className="secondary-button"
         >
-          {paid ? "Mark unpaid" : "Mark paid"}
+          {paid ? 'Mark unpaid' : 'Mark paid'}
         </button>
 
         <button
           type="button"
-          onClick={() => onDelete(id)}
+          onClick={() => setConfirmOpen(true)}
           className="danger-button"
         >
           Delete
         </button>
       </div>
+
+      <ConfirmationDialog
+        open={confirmOpen}
+        title="Delete expense?"
+        description={`This will permanently delete "${name}" from your expense history.`}
+        confirmLabel="Delete expense"
+        onConfirm={() => onDelete(id)}
+        onClose={() => setConfirmOpen(false)}
+      />
+
+      <ExpenseEditDialog
+        open={editOpen}
+        expense={expense}
+        categories={categories}
+        onSave={onUpdate}
+        onClose={() => setEditOpen(false)}
+      />
     </li>
-  );
+  )
 }
 
-export default ExpenseItem;
+export default ExpenseItem

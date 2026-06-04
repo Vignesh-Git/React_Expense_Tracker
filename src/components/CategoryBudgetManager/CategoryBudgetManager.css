@@ -1,0 +1,51 @@
+.category-budget-card {
+  display: grid;
+  gap: 16px;
+}
+
+.category-budget-card h2 {
+  margin: 0 0 6px;
+}
+
+.category-budget-list {
+  display: grid;
+  gap: 10px;
+}
+
+.category-budget-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(140px, 220px);
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.category-budget-row span {
+  color: var(--text-h);
+  font-weight: 800;
+}
+
+.category-budget-row p {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}
+
+.category-budget-row input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--card-bg);
+  color: var(--text);
+  font: inherit;
+}
+
+@media (max-width: 560px) {
+  .category-budget-row {
+    grid-template-columns: 1fr;
+  }
+}

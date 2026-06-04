@@ -147,6 +147,13 @@
     width: 100%;
     flex-wrap: wrap;
   }
+
+  .secondary-button,
+  .danger-button {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

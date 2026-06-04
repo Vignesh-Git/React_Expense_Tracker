@@ -1,0 +1,93 @@
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-hero,
+.currency-settings-card {
+  display: grid;
+  gap: 16px;
+}
+
+.settings-eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.settings-hero h1,
+.settings-section-header h2 {
+  margin: 0 0 6px;
+  color: var(--text-h);
+}
+
+.settings-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.currency-preview {
+  flex-shrink: 0;
+  min-width: 82px;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--accent-bg);
+}
+
+.currency-preview span {
+  color: var(--accent);
+  font-size: 1.6rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.currency-preview p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.currency-select-field {
+  display: grid;
+  gap: 8px;
+  max-width: 460px;
+  font-weight: 700;
+}
+
+.currency-select-field span {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.currency-select-field select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+@media (max-width: 560px) {
+  .settings-section-header {
+    flex-direction: column;
+  }
+
+  .currency-preview {
+    width: 100%;
+  }
+}

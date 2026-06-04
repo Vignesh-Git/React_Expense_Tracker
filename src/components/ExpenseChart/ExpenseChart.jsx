@@ -1,31 +1,28 @@
 import { useMemo } from 'react'
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { getCategoryColor } from '../../lib/categoryColors.js'
+import { formatCurrency } from '../../lib/currency.js'
+import { getCategoryTotals } from '../../lib/expenseAnalytics.js'
 import './ExpenseChart.css'
 
-const categoryColors = {
-  Food: '#a78bfa',
-  Travel: '#38bdf8',
-  Shopping: '#f97316',
-  Bills: '#22c55e',
-}
-
-function ExpenseChart({ expenses }) {
+function ExpenseChart({
+  expenses,
+  categories = [],
+  currencyCode,
+  title = 'Spending breakdown',
+  subtitle = 'Live category totals from your expenses.',
+}) {
   const chartData = useMemo(() => {
-    const totals = expenses.reduce((acc, expense) => {
-      acc[expense.category] = (acc[expense.category] || 0) + expense.amount
-      return acc
-    }, {})
-
-    return Object.entries(totals).map(([category, amount]) => ({
-      category,
-      amount,
+    return getCategoryTotals(expenses, categories).map((item) => ({
+      ...item,
+      colorIndex: categories.findIndex((category) => category === item.category),
     }))
-  }, [expenses])
+  }, [categories, expenses])
 
   if (chartData.length === 0) {
     return (
       <section className="card chart-card">
-        <h2>Spending breakdown</h2>
+        <h2>{title}</h2>
         <p className="empty-state">Graph will be shown once an expense is added.</p>
       </section>
     )
@@ -35,8 +32,8 @@ function ExpenseChart({ expenses }) {
     <section className="card chart-card">
       <div className="chart-header">
         <div>
-          <h2>Spending breakdown</h2>
-          <p className="chart-subtitle">Live category totals from your expenses.</p>
+          <h2>{title}</h2>
+          <p className="chart-subtitle">{subtitle}</p>
         </div>
       </div>
       <div className="chart-wrapper">
@@ -53,11 +50,17 @@ function ExpenseChart({ expenses }) {
               paddingAngle={3}
               stroke="transparent"
             >
-              {chartData.map((entry) => (
-                <Cell key={entry.category} fill={categoryColors[entry.category] ?? '#64748b'} />
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={entry.category}
+                  fill={getCategoryColor(
+                    entry.category,
+                    entry.colorIndex >= 0 ? entry.colorIndex : index,
+                  )}
+                />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => [`$${value.toFixed(2)}`, 'Amount']} />
+            <Tooltip formatter={(value) => [formatCurrency(value, currencyCode), 'Amount']} />
             <Legend verticalAlign="bottom" height={36} />
           </PieChart>
         </ResponsiveContainer>

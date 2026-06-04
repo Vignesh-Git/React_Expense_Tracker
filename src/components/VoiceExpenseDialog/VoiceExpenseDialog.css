@@ -1,0 +1,187 @@
+.voice-dialog {
+  border: none;
+  padding: 0;
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  border-radius: 18px;
+  background: var(--card-bg);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.voice-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.voice-dialog-panel {
+  padding: 22px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+.voice-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.voice-dialog-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-h);
+}
+
+.voice-dialog-close {
+  border: none;
+  background: var(--button-bg);
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+.voice-dialog-close:hover {
+  color: var(--text-h);
+}
+
+.voice-dialog-section {
+  margin-bottom: 16px;
+}
+
+.voice-dialog-label {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.voice-transcript {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-style: italic;
+  color: var(--text-h);
+  line-height: 1.5;
+  max-height: 180px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.voice-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+
+.voice-edit-field {
+  display: grid;
+  gap: 6px;
+}
+
+.voice-edit-field--wide {
+  grid-column: 1 / -1;
+}
+
+.voice-edit-field span,
+.voice-paid-toggle span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.voice-edit-field input,
+.voice-edit-field select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.voice-paid-toggle {
+  align-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.voice-paid-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.voice-paid-toggle span {
+  color: var(--text-h);
+}
+
+.voice-edit-hint {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.voice-parse-error {
+  margin: 0 0 16px;
+}
+
+.voice-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.voice-dialog-actions .secondary-button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--button-bg);
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.voice-dialog-actions .secondary-button:hover {
+  transform: translateY(-1px);
+}
+
+.voice-dialog-actions .primary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 480px) {
+  .voice-edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .voice-dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .voice-dialog-actions .primary-button,
+  .voice-dialog-actions .secondary-button {
+    width: 100%;
+  }
+}

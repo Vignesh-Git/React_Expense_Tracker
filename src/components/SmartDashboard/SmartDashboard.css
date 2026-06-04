@@ -1,0 +1,349 @@
+.smart-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.smart-dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 8% 0%, var(--accent-bg), transparent 34%),
+    var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+.smart-eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.smart-dashboard-header h1 {
+  margin: 0 0 6px;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: var(--text-h);
+  line-height: 1.1;
+}
+
+.budget-editor {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.budget-editor label {
+  display: grid;
+  gap: 6px;
+  min-width: 180px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.budget-editor input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.budget-editor button {
+  min-height: 42px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+}
+
+.smart-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.smart-stat-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+.smart-stat-card--success {
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.smart-stat-card--danger {
+  border-color: rgba(239, 68, 68, 0.32);
+  background:
+    linear-gradient(0deg, rgba(239, 68, 68, 0.06), rgba(239, 68, 68, 0.06)),
+    var(--card-bg);
+}
+
+.smart-stat-card--warning {
+  border-color: rgba(245, 158, 11, 0.32);
+  background:
+    linear-gradient(0deg, rgba(245, 158, 11, 0.06), rgba(245, 158, 11, 0.06)),
+    var(--card-bg);
+}
+
+.smart-stat-label {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.smart-stat-value {
+  margin: 10px 0 6px;
+  color: var(--text-h);
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  font-weight: 850;
+  line-height: 1.1;
+}
+
+.smart-stat-helper {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.smart-insights-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 16px;
+}
+
+.smart-panel {
+  min-width: 0;
+}
+
+.smart-panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.smart-panel-header h2 {
+  margin: 0;
+  color: var(--text-h);
+}
+
+.category-spending-list,
+.top-expenses-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.category-spending-list li {
+  display: grid;
+  gap: 9px;
+}
+
+.category-spending-row,
+.top-expenses-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.category-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.category-spending-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-spending-text p,
+.top-expenses-list p {
+  margin: 0;
+  color: var(--text-h);
+  font-weight: 750;
+}
+
+.category-spending-text span,
+.top-expenses-list span {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+.category-progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--button-bg);
+}
+
+.category-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.trend-chart-wrapper {
+  min-height: 260px;
+}
+
+.top-expenses-list li {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.top-expenses-list div {
+  min-width: 0;
+}
+
+.top-expenses-list strong,
+.category-spending-row strong {
+  color: var(--text-h);
+  white-space: nowrap;
+}
+
+.smart-empty {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.budget-alert-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.budget-alert {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.budget-alert strong {
+  color: var(--text-h);
+}
+
+.budget-alert span {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.budget-alert--warning {
+  border-color: rgba(245, 158, 11, 0.32);
+}
+
+.budget-alert--danger {
+  border-color: rgba(239, 68, 68, 0.32);
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.heatmap-cell {
+  min-height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  background: var(--button-bg);
+}
+
+.heatmap-cell--1 {
+  background: rgba(99, 102, 241, 0.18);
+  color: var(--accent);
+}
+
+.heatmap-cell--2 {
+  background: rgba(99, 102, 241, 0.3);
+  color: var(--accent);
+}
+
+.heatmap-cell--3 {
+  background: rgba(99, 102, 241, 0.48);
+  color: #fff;
+}
+
+.heatmap-cell--4 {
+  background: var(--accent);
+  color: #fff;
+}
+
+@media (max-width: 1100px) {
+  .smart-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .smart-insights-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .smart-dashboard-header {
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .budget-editor {
+    width: 100%;
+  }
+
+  .budget-editor label {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .smart-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-editor {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .budget-editor button {
+    width: 100%;
+  }
+}

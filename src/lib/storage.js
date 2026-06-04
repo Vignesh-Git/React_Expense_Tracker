@@ -4,6 +4,10 @@ export const STORAGE_KEYS = {
   users: `${STORAGE_PREFIX}:users`,
   session: `${STORAGE_PREFIX}:session`,
   expenses: `${STORAGE_PREFIX}:expenses`,
+  categories: `${STORAGE_PREFIX}:categories`,
+  budgets: `${STORAGE_PREFIX}:budgets`,
+  preferences: `${STORAGE_PREFIX}:preferences`,
+  recurringRules: `${STORAGE_PREFIX}:recurring-rules`,
   legacyExpenses: 'expenses',
 }
 

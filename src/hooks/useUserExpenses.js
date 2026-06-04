@@ -1,34 +1,47 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { getExpensesForUser, saveExpensesForUser } from '../lib/expensesStorage.js'
+import {
+  getDueRecurringExpenses,
+  getRecurringRulesForUser,
+  markRulesGenerated,
+  saveRecurringRulesForUser,
+} from '../lib/recurringStorage.js'
 
-/**
- * Loads expenses when userId changes and persists only after hydration
- * or on explicit mutations — avoids overwriting storage with [] on login.
- */
+function hydrateExpenses(userId) {
+  if (!userId) return []
+
+  const savedExpenses = getExpensesForUser(userId)
+  const recurringRules = getRecurringRulesForUser(userId)
+  const dueItems = getDueRecurringExpenses(recurringRules, savedExpenses)
+  const hydratedExpenses = [...savedExpenses, ...dueItems.map((item) => item.expense)]
+
+  if (dueItems.length > 0) {
+    saveExpensesForUser(userId, hydratedExpenses)
+    saveRecurringRulesForUser(userId, markRulesGenerated(recurringRules, dueItems))
+  }
+
+  return hydratedExpenses
+}
+
 export function useUserExpenses(userId) {
-  const [expenses, setExpenses] = useState([])
-  const hydratedUserIdRef = useRef(null)
+  const [localExpenses, setLocalExpenses] = useState(() => ({
+    userId,
+    expenses: hydrateExpenses(userId),
+  }))
 
-  useEffect(() => {
-    if (!userId) {
-      hydratedUserIdRef.current = null
-      setExpenses([])
-      return
-    }
-
-    hydratedUserIdRef.current = null
-    setExpenses(getExpensesForUser(userId))
-    hydratedUserIdRef.current = userId
-  }, [userId])
+  const expenses =
+    localExpenses.userId === userId ? localExpenses.expenses : hydrateExpenses(userId)
 
   const persist = useCallback(
     (updater) => {
-      setExpenses((previous) => {
+      setLocalExpenses((previousState) => {
+        const previous =
+          previousState.userId === userId ? previousState.expenses : hydrateExpenses(userId)
         const next = typeof updater === 'function' ? updater(previous) : updater
-        if (hydratedUserIdRef.current === userId && userId) {
+        if (userId) {
           saveExpensesForUser(userId, next)
         }
-        return next
+        return { userId, expenses: next }
       })
     },
     [userId],
@@ -48,6 +61,27 @@ export function useUserExpenses(userId) {
     [persist],
   )
 
+  const updateExpense = useCallback(
+    (id, updates) => {
+      persist((previous) =>
+        previous.map((expense) =>
+          expense.id === id ? { ...expense, ...updates, id: expense.id } : expense,
+        ),
+      )
+    },
+    [persist],
+  )
+
+  const restoreExpense = useCallback(
+    (expense) => {
+      persist((previous) => {
+        if (previous.some((item) => item.id === expense.id)) return previous
+        return [...previous, expense]
+      })
+    },
+    [persist],
+  )
+
   const togglePaid = useCallback(
     (id) => {
       persist((previous) =>
@@ -63,6 +97,8 @@ export function useUserExpenses(userId) {
     expenses,
     addExpense,
     deleteExpense,
+    updateExpense,
+    restoreExpense,
     togglePaid,
   }
 }

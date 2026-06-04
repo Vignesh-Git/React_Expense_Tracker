@@ -1,49 +1,85 @@
 # SpendWise — React Expense Tracker
 
-A modern, client-side expense tracker built with **React 19** and **Vite**. Users sign up or sign in; each account gets its own expense vault in **localStorage**. Add spending via a form, natural language, or voice — then explore totals, charts, and history.
+SpendWise is a modern, client-side expense tracker built with **React 19** and **Vite**. It includes local sign up/sign in, per-user storage, smart expense entry, OCR bill scanning, recurring expenses, budgets, advanced filtering, and a responsive product-style dashboard.
 
-## Tech stack
+All application data is stored in the browser with `localStorage`, scoped by user.
 
-- React 19 · Vite 8 · React Router 7
-- Recharts (dashboard pie chart)
-- Web Speech API (voice input)
-- localStorage (users, session, per-user expenses)
+## Tech Stack
 
-## Features
+- React 19, Vite 8, React Router 7
+- Recharts for dashboard charts
+- Web Speech API for voice expense capture
+- Tesseract.js for client-side OCR
+- ExcelJS for `.xlsx` export
+- localStorage for users, sessions, expenses, settings, budgets, and recurring rules
+
+## Core Features
 
 ### Authentication
-- **Sign up** — name, email, password (min 6 characters)
-- **Sign in / Sign out** — session persisted until logout
-- Passwords stored as **SHA-256** hashes (not plain text)
+- Local **sign up / sign in / sign out**
+- Passwords stored as **SHA-256 hashes**, not plain text
+- Protected app routes for authenticated users
+- Session persistence until logout
 
-### Expenses
-- **Per-user persistence** — data keyed by `userId`; survives logout and re-login
-- **Manual form** — name, amount, category, validation
-- **Smart add (NLP + voice)** — parse amount, name, category, date, and paid status from text or speech
-- **Paid / unpaid** — toggle on History
-- **Dates** — optional `date` field (from smart add or form default: today)
-- **Delete** — remove entries from History
+### Expense Entry
+- Manual add form with validation
+- Voice add with natural-language parsing
+- OCR bill upload with receipt total extraction
+- Editable confirmation dialog before saving voice/OCR results
+- Recurring monthly expense rules
+- Dynamic per-user categories
+- Paid/unpaid tracking
 
-### Dashboard & History
-- **Pie chart** — spending breakdown by category (Food, Travel, Shopping, Bills)
-- **Category filter** — History page (All + each category)
-- **Header** — running total, expense count, user info, theme toggle
+### Expense Management
+- Edit existing expenses from History
+- Delete confirmation popup for expenses and categories
+- Undo last deleted expense with toast action
+- Advanced filtering by:
+  - Date range
+  - Category
+  - Amount range
+  - Paid/unpaid status
+  - Search text
+- Excel export for filtered results with total row and locked exported-date column
 
-### UX
-- **Dark / light theme** — persisted in localStorage
-- **Protected routes** — dashboard and history require login
-- **Legacy migration** — old global `expenses` key moves to the first signed-in user, then is removed
+### Smart Dashboard
+- Total spent this month
+- Remaining monthly budget
+- Category-wise spending
+- Monthly trends chart
+- Top expenses
+- Category budget warnings
+- Forecasted month-end spend
+- Previous month comparison
+- Daily spending heatmap
+
+### Setup
+- Currency selector with `$` as default
+- Per-user category management
+- Per-category monthly budgets
+- Dark/light theme support
+
+### Responsive Product UI
+- Desktop side navigation
+- Mobile bottom navigation
+- Slide-out mobile drawer
+- Sticky top bar with total
+- Mobile-friendly cards, dialogs, filters, and forms
 
 ## Routes
 
 | Path | Description |
 |------|-------------|
-| `/login` | Sign in (guests only) |
-| `/signup` | Create account (guests only) |
-| `/dashboard` | Chart, smart add, manual form |
-| `/history` | Filter, list, paid toggle, delete |
+| `/login` | Sign in |
+| `/signup` | Create account |
+| `/dashboard` | Smart dashboard insights |
+| `/add-expense` | Add expense, scan bill, voice add, recurring rules, all-time category mix |
+| `/history` | Advanced filters, edit/delete, paid toggle, Excel export |
+| `/settings` | Currency setup, category management, category budgets |
 
-## Expense model
+## Data Models
+
+### Expense
 
 ```json
 {
@@ -52,116 +88,151 @@ A modern, client-side expense tracker built with **React 19** and **Vite**. User
   "amount": 12.5,
   "category": "Food",
   "paid": false,
-  "date": "2026-06-02"
+  "date": "2026-06-02",
+  "recurringRuleId": "optional-rule-id",
+  "recurringMonth": "2026-06"
 }
 ```
 
-## localStorage keys
+### Recurring Rule
+
+```json
+{
+  "id": "uuid",
+  "name": "Netflix",
+  "amount": 15,
+  "category": "Bills",
+  "startDate": "2026-06-01",
+  "paid": true,
+  "active": true,
+  "lastGeneratedMonth": "2026-06"
+}
+```
+
+### Budget
+
+```json
+{
+  "monthlyBudget": 5000,
+  "categoryBudgets": {
+    "Food": 1000,
+    "Travel": 1500
+  }
+}
+```
+
+## localStorage Keys
 
 | Key | Purpose |
 |-----|---------|
-| `expense-tracker:users` | Registered users (`id`, `email`, `displayName`, `passwordHash`, `createdAt`) |
-| `expense-tracker:session` | Active session (`userId`, `email`, `displayName`) |
+| `expense-tracker:users` | Registered users |
+| `expense-tracker:session` | Active session |
 | `expense-tracker:expenses` | Map of `userId → expense[]` |
+| `expense-tracker:categories` | Map of `userId → category[]` |
+| `expense-tracker:budgets` | Map of `userId → budget` |
+| `expense-tracker:preferences` | Map of `userId → currencyCode` |
+| `expense-tracker:recurring-rules` | Map of `userId → recurringRule[]` |
 | `theme` | `light` or `dark` |
 
-Expenses are **only saved on add, edit-via-smart-add, delete, or paid toggle** — not on every render — so re-login does not wipe stored data.
+Legacy global `expenses` data is migrated into the first signed-in user’s vault, then removed.
 
-## Project structure
+## Project Structure
 
-```
+```text
 src/
-├── lib/
-│   ├── storage.js          # localStorage helpers & keys
-│   ├── auth.js             # sign up, sign in, session, password hash
-│   ├── expensesStorage.js  # per-user expense map
-│   └── parseExpenseNlp.js  # natural-language parser + voice examples
+├── components/
+│   ├── AuthLayout/
+│   ├── CategoryBudgetManager/
+│   ├── CategoryManager/
+│   ├── ConfirmationDialog/
+│   ├── ExpenseChart/
+│   ├── ExpenseEditDialog/
+│   ├── ExpenseForm/
+│   ├── ExpenseItem/
+│   ├── ExpenseList/
+│   ├── MobileBottomNav/
+│   ├── RecurringManager/
+│   ├── SideNav/
+│   ├── SmartDashboard/
+│   ├── Toast/
+│   ├── TopBar/
+│   └── VoiceExpenseDialog/
 ├── context/
-│   └── AuthContext.jsx     # auth state & actions
+│   └── AuthContext.jsx
 ├── hooks/
-│   ├── useUserExpenses.js  # load/save expenses per user (persistent)
-│   └── useSpeechRecognition.js
+│   ├── useRecurringExpenses.js
+│   ├── useSpeechRecognition.js
+│   ├── useUserBudget.js
+│   ├── useUserCategories.js
+│   ├── useUserExpenses.js
+│   └── useUserPreferences.js
 ├── layouts/
-│   └── MainLayout.jsx      # authenticated shell, routes, theme
-├── pages/
-│   ├── Auth/               # Login, Signup
-│   ├── Dashboard/
-│   └── History/
-└── components/
-    ├── AuthLayout/
-    ├── SmartExpenseInput/  # NLP + voice UI
-    ├── ExpenseForm/
-    ├── ExpenseChart/
-    ├── ExpenseList/ · ExpenseItem/
-    ├── FilterBar/ · Header/
-    ├── ProtectedRoute/ · GuestRoute/
-    └── LoadingScreen/
+│   └── MainLayout.jsx
+├── lib/
+│   ├── auth.js
+│   ├── budgetStorage.js
+│   ├── categoriesStorage.js
+│   ├── categoryColors.js
+│   ├── currency.js
+│   ├── expenseAnalytics.js
+│   ├── expensesStorage.js
+│   ├── exportExpensesExcel.js
+│   ├── ocrExpense.js
+│   ├── parseExpenseNlp.js
+│   ├── recurringStorage.js
+│   └── storage.js
+└── pages/
+    ├── AddExpense/
+    ├── Auth/
+    ├── Dashboard/
+    ├── History/
+    └── Settings/
 ```
 
-## Getting started
-
-Install dependencies:
+## Getting Started
 
 ```bash
 npm install
-```
-
-Start the dev server:
-
-```bash
 npm run dev
 ```
 
-Build for production:
+Build and preview:
 
 ```bash
 npm run build
-```
-
-Preview the production build:
-
-```bash
 npm run preview
 ```
 
-Run lint:
+Lint:
 
 ```bash
 npm run lint
 ```
 
-## Smart add — voice & text examples
+## Voice Add Examples
 
-On the **Dashboard**, use **Smart add** or click an example chip:
+Use the microphone button on `/add-expense`.
 
-| Example | Phrase |
-|---------|--------|
-| Quick coffee | *Five dollars for coffee* |
-| Restaurant | *Spent $12.50 on lunch at Chipotle* |
-| Groceries | *Forty two dollars groceries yesterday* |
-| Ride share | *Uber ride twenty five dollars* |
-| Subscription | *Netflix fifteen bucks bills category* |
-| Fuel (paid) | *Paid fifty for gas* |
-| Shopping | *Amazon shopping ninety nine dollars* |
-| Rent | *Rent twelve hundred dollars bills* |
+| Say something like | Result |
+|--------------------|--------|
+| `Five dollars for coffee` | Amount + Food |
+| `Spent 12.50 on lunch at Chipotle` | Food expense |
+| `Forty two dollars groceries yesterday` | Food + yesterday date |
+| `Uber ride twenty five dollars` | Travel |
+| `Paid fifty for gas` | Travel + paid |
+| `Netflix fifteen bucks bills` | Bills |
 
-**Voice tips**
+## Bill OCR
 
-- Use **Chrome** or **Edge** for best support
-- Allow microphone access when prompted
-- Speak clearly: `$24`, `twenty five dollars`, `twelve hundred dollars`
-- Pause briefly so the browser can finalize the transcript
+Use the bill upload icon on `/add-expense`.
 
-**What the parser detects**
+1. Upload a clear JPG, PNG, or WEBP bill image.
+2. Tesseract.js reads the bill locally in the browser.
+3. The app prioritizes totals such as `Grand Total`, `Amount Due`, and `Total`.
+4. Review and edit the parsed expense before confirming.
 
-| Input | Detected |
-|-------|----------|
-| `$42`, `42 dollars`, `twenty five dollars` | Amount |
-| `lunch`, `uber`, `netflix`, `amazon`, … | Category (keywords) |
-| `category food` | Explicit category |
-| `yesterday`, `today`, `last week` | Date |
-| `paid` | Marks expense as paid |
+## Notes
 
-## Security note
-
-This is a **client-only demo**. Passwords are hashed, but all data lives in the browser and can be inspected or cleared via DevTools. Do not rely on it for real financial data without a proper backend, HTTPS, and secure authentication.
+- This is a client-only demo app.
+- localStorage is not secure storage for production financial data.
+- A production version should use a backend, secure authentication, encrypted persistence, and server-side backup/sync.

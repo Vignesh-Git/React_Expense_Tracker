@@ -1,18 +1,25 @@
-import ExpenseChart from '../../components/ExpenseChart'
-import ExpenseForm from '../../components/ExpenseForm'
-import SmartExpenseInput from '../../components/SmartExpenseInput'
+import SmartDashboard from '../../components/SmartDashboard'
 import './Dashboard.css'
 
-function Dashboard({ expenses, categories, addExpense }) {
+function Dashboard({
+  expenses,
+  categories,
+  monthlyBudget,
+  categoryBudgets,
+  currencyCode,
+  updateMonthlyBudget,
+}) {
   return (
-    <>
-      <SmartExpenseInput categories={categories} onAdd={addExpense} />
-
-      <div className="dashboard-row">
-        <ExpenseChart expenses={expenses} />
-        <ExpenseForm categories={categories} onAdd={addExpense} />
-      </div>
-    </>
+    <div className="dashboard-page">
+      <SmartDashboard
+        expenses={expenses}
+        categories={categories}
+        monthlyBudget={monthlyBudget}
+        categoryBudgets={categoryBudgets}
+        currencyCode={currencyCode}
+        onUpdateMonthlyBudget={updateMonthlyBudget}
+      />
+    </div>
   )
 }
 
