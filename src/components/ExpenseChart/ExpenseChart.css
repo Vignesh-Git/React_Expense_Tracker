@@ -32,8 +32,38 @@
 }
 
 .chart-wrapper {
+  position: relative;
   margin-top: 24px;
   min-height: 320px;
+}
+
+.chart-center-label {
+  position: absolute;
+  top: 142px;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  gap: 3px;
+  min-width: 120px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.chart-center-label-title {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.chart-center-label-value {
+  color: var(--text-h);
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 .empty-state {
@@ -62,5 +92,9 @@
 @media (max-width: 620px) {
   .chart-wrapper {
     min-height: 240px;
+  }
+
+  .chart-center-label {
+    top: 142px;
   }
 }

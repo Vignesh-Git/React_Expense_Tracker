@@ -1,19 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { parseExpenseNlp } from '../../lib/parseExpenseNlp.js'
 import { parseBillOcrText, readBillImage } from '../../lib/ocrExpense.js'
+import { CURRENCIES } from '../../lib/currency.js'
 import { useSpeechRecognition } from '../../hooks/useSpeechRecognition.js'
 import VoiceExpenseDialog from '../VoiceExpenseDialog'
 import './ExpenseForm.css'
 
-function ExpenseForm({ categories, onAdd }) {
+function getToday() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+function ExpenseForm({ categories, currencyCode, onAdd }) {
   const billInputRef = useRef(null)
   const [name, setName] = useState('')
   const [amount, setAmount] = useState('')
+  const [date, setDate] = useState(getToday())
+  const [expenseCurrencyCode, setExpenseCurrencyCode] = useState(currencyCode)
   const [category, setCategory] = useState(categories[0] ?? '')
   const [error, setError] = useState('')
   const [voiceError, setVoiceError] = useState('')
   const [billError, setBillError] = useState('')
   const [isReadingBill, setIsReadingBill] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const [ocrProgress, setOcrProgress] = useState(0)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogText, setDialogText] = useState('')
@@ -26,6 +34,10 @@ function ExpenseForm({ categories, onAdd }) {
       setCategory(categories[0])
     }
   }, [categories, category])
+
+  useEffect(() => {
+    setExpenseCurrencyCode(currencyCode)
+  }, [currencyCode])
 
   const openVoiceDialog = useCallback(
     (transcript) => {
@@ -106,13 +118,14 @@ function ExpenseForm({ categories, onAdd }) {
     setParseResult(null)
   }
 
-  const handleConfirmParsedExpense = (expense) => {
-    onAdd(expense)
+  const handleConfirmParsedExpense = async (expense) => {
+    await onAdd(expense)
     closeDialog()
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    setError('')
 
     if (!name.trim()) {
       setError('Please enter an expense name.')
@@ -125,17 +138,32 @@ function ExpenseForm({ categories, onAdd }) {
       return
     }
 
-    onAdd({
-      name: name.trim(),
-      amount: parsedAmount,
-      category,
-      paid: false,
-      date: new Date().toISOString().slice(0, 10),
-    })
-    setName('')
-    setAmount('')
-    setCategory(categories[0] ?? '')
-    setError('')
+    if (!date) {
+      setError('Please choose an expense date.')
+      return
+    }
+
+    setIsSaving(true)
+    try {
+      await onAdd({
+        name: name.trim(),
+        amount: parsedAmount,
+        currencyCode: expenseCurrencyCode,
+        category,
+        paid: false,
+        date,
+      })
+      setName('')
+      setAmount('')
+      setDate(getToday())
+      setExpenseCurrencyCode(currencyCode)
+      setCategory(categories[0] ?? '')
+      setError('')
+    } catch (saveError) {
+      setError(saveError.message || 'Could not convert this expense. Please try again.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const activeAssistError = voiceError || speechError || billError
@@ -245,6 +273,32 @@ function ExpenseForm({ categories, onAdd }) {
           />
         </label>
 
+        <div className="expense-form-row">
+          <label>
+            <span>Currency</span>
+            <select
+              value={expenseCurrencyCode}
+              onChange={(event) => setExpenseCurrencyCode(event.target.value)}
+            >
+              {CURRENCIES.map((currency) => (
+                <option key={currency.code} value={currency.code}>
+                  {currency.symbol} - {currency.code}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            <span>Date</span>
+            <input
+              type="date"
+              max={getToday()}
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+            />
+          </label>
+        </div>
+
         <label>
           <span>Category</span>
           <select value={category} onChange={(event) => setCategory(event.target.value)}>
@@ -258,8 +312,8 @@ function ExpenseForm({ categories, onAdd }) {
 
         {error && <p className="form-error">{error}</p>}
 
-        <button type="submit" className="primary-button">
-          Add expense
+        <button type="submit" className="primary-button" disabled={isSaving}>
+          {isSaving ? 'Converting...' : 'Add expense'}
         </button>
       </form>
 
@@ -268,6 +322,7 @@ function ExpenseForm({ categories, onAdd }) {
         transcript={dialogText}
         parseResult={parseResult}
         categories={categories}
+        currencyCode={currencyCode}
         source={dialogSource}
         onConfirm={handleConfirmParsedExpense}
         onClose={closeDialog}

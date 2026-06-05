@@ -21,7 +21,7 @@ function buildFileName() {
 
 /**
  * Export expenses to a protected .xlsx workbook.
- * Columns: Name, Date, Category, Amount, Exported Date (locked).
+ * Columns: Name, Date, Category, Amount, source currency details, Exported Date (locked).
  * Includes a TOTAL row for Amount.
  */
 export async function exportExpensesToExcel(expenses, currencyCode) {
@@ -55,7 +55,11 @@ export async function exportExpensesToExcel(expenses, currencyCode) {
     { header: 'Name', key: 'name', width: 30 },
     { header: 'Date', key: 'date', width: 16 },
     { header: 'Category', key: 'category', width: 14 },
-    { header: 'Amount', key: 'amount', width: 14 },
+    { header: `Amount (${currency.code})`, key: 'amount', width: 18 },
+    { header: 'Original Amount', key: 'originalAmount', width: 18 },
+    { header: 'Original Currency', key: 'originalCurrency', width: 18 },
+    { header: 'Exchange Rate', key: 'exchangeRate', width: 16 },
+    { header: 'Rate Date', key: 'exchangeRateDate', width: 16 },
     { header: 'Exported Date', key: 'exportedDate', width: 24 },
   ]
 
@@ -73,6 +77,10 @@ export async function exportExpensesToExcel(expenses, currencyCode) {
       date: formatExpenseDate(expense.date),
       category: expense.category,
       amount: expense.amount,
+      originalAmount: expense.originalAmount ?? expense.amount,
+      originalCurrency: expense.originalCurrencyCode ?? expense.currencyCode ?? currencyCode,
+      exchangeRate: expense.exchangeRate ?? 1,
+      exchangeRateDate: formatExpenseDate(expense.exchangeRateDate ?? expense.date),
       exportedDate: exportedDateLabel,
     })
   })
@@ -83,6 +91,10 @@ export async function exportExpensesToExcel(expenses, currencyCode) {
     date: '',
     category: '',
     amount: totalAmount,
+    originalAmount: '',
+    originalCurrency: '',
+    exchangeRate: '',
+    exchangeRateDate: '',
     exportedDate: exportedDateLabel,
   })
   totalRow.font = { bold: true }
@@ -92,7 +104,7 @@ export async function exportExpensesToExcel(expenses, currencyCode) {
     fgColor: { argb: 'FFF3F4F6' },
   }
 
-  const exportedDateColIndex = 5
+  const exportedDateColIndex = 9
   const lastRow = sheet.rowCount
 
   sheet.eachRow((row, rowNumber) => {

@@ -139,6 +139,10 @@
   color: var(--text-muted);
 }
 
+.voice-edit-hint--error {
+  color: #b3384f;
+}
+
 .voice-parse-error {
   margin: 0 0 16px;
 }

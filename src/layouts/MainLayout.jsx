@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import MobileBottomNav from '../components/MobileBottomNav'
 import SideNav from '../components/SideNav'
@@ -11,6 +11,7 @@ import { useUserCategories } from '../hooks/useUserCategories.js'
 import { useUserExpenses } from '../hooks/useUserExpenses.js'
 import { useUserPreferences } from '../hooks/useUserPreferences.js'
 import { buildCategoryList } from '../lib/categoriesStorage.js'
+import { normalizeExpenseCurrency } from '../lib/exchangeRates.js'
 import AddExpense from '../pages/AddExpense'
 import Dashboard from '../pages/Dashboard'
 import History from '../pages/History'
@@ -65,6 +66,22 @@ function MainLayout() {
 
   const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0)
   const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
+  const handleAddExpense = useCallback(
+    async (expense) => {
+      const normalizedExpense = await normalizeExpenseCurrency(expense, currencyCode)
+      addExpense(normalizedExpense)
+    },
+    [addExpense, currencyCode],
+  )
+
+  const handleUpdateExpense = useCallback(
+    async (id, updates) => {
+      const normalizedExpense = await normalizeExpenseCurrency(updates, currencyCode)
+      updateExpense(id, normalizedExpense)
+    },
+    [currencyCode, updateExpense],
+  )
+
   const handleDeleteExpense = (id) => {
     const expense = expenses.find((item) => item.id === id)
     if (!expense) return
@@ -131,7 +148,7 @@ function MainLayout() {
                   expenses={expenses}
                   categories={categories}
                   chartCategories={visibleCategories}
-                  addExpense={addExpense}
+                  addExpense={handleAddExpense}
                   recurringRules={recurringRules}
                   addRecurringRule={addRecurringRule}
                   deleteRecurringRule={deleteRecurringRule}
@@ -148,7 +165,7 @@ function MainLayout() {
                   currencyCode={currencyCode}
                   togglePaid={togglePaid}
                   deleteExpense={handleDeleteExpense}
-                  updateExpense={updateExpense}
+                  updateExpense={handleUpdateExpense}
                 />
               }
             />

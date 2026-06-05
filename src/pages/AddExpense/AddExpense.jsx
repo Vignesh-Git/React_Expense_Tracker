@@ -34,7 +34,7 @@ function AddExpense({
           subtitle="Lifetime spending split across your categories."
           currencyCode={currencyCode}
         />
-        <ExpenseForm categories={categories} onAdd={addExpense} />
+        <ExpenseForm categories={categories} currencyCode={currencyCode} onAdd={addExpense} />
       </div>
 
       <RecurringManager

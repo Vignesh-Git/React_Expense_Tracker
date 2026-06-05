@@ -50,8 +50,9 @@
 
 .expense-meta {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 4px;
   justify-content: flex-end;
   white-space: nowrap;
 }
@@ -59,6 +60,11 @@
 .expense-amount {
   font-weight: 700;
   font-size: 1rem;
+}
+
+.expense-original-amount {
+  color: var(--text-muted);
+  font-size: 0.78rem;
 }
 
 .badge {
@@ -141,6 +147,10 @@
   .expense-meta,
   .expense-actions {
     justify-content: flex-start;
+  }
+
+  .expense-meta {
+    align-items: flex-start;
   }
 
   .expense-actions {

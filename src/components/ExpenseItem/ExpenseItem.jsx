@@ -16,9 +16,11 @@ function formatExpenseDate(isoDate) {
 }
 
 function ExpenseItem({ expense, categories, currencyCode, onTogglePaid, onDelete, onUpdate }) {
-  const { id, name, amount, category, paid, date } = expense
+  const { id, name, amount, category, paid, date, originalAmount, originalCurrencyCode } = expense
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const hasConvertedAmount =
+    originalAmount > 0 && originalCurrencyCode && originalCurrencyCode !== currencyCode
 
   return (
     <li className="expense-item">
@@ -32,6 +34,11 @@ function ExpenseItem({ expense, categories, currencyCode, onTogglePaid, onDelete
 
       <div className="expense-meta">
         <span className="expense-amount">{formatCurrency(amount, currencyCode)}</span>
+        {hasConvertedAmount && (
+          <span className="expense-original-amount">
+            {formatCurrency(originalAmount, originalCurrencyCode)} converted
+          </span>
+        )}
       </div>
 
       <div className="expense-actions">
@@ -68,6 +75,7 @@ function ExpenseItem({ expense, categories, currencyCode, onTogglePaid, onDelete
         open={editOpen}
         expense={expense}
         categories={categories}
+        currencyCode={currencyCode}
         onSave={onUpdate}
         onClose={() => setEditOpen(false)}
       />

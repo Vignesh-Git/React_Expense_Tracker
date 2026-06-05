@@ -109,6 +109,12 @@
   gap: 16px;
 }
 
+.expense-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .expense-form label,
 .expense-form select,
 .expense-form input {
@@ -150,6 +156,12 @@
   box-shadow: var(--shadow);
 }
 
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
 .form-error {
   color: #b3384f;
   margin: 0;
@@ -180,6 +192,10 @@
 }
 
 @media (max-width: 420px) {
+  .expense-form-row {
+    grid-template-columns: 1fr;
+  }
+
   .expense-form-header {
     align-items: flex-start;
   }

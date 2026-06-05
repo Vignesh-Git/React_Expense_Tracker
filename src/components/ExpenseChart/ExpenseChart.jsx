@@ -18,6 +18,7 @@ function ExpenseChart({
       colorIndex: categories.findIndex((category) => category === item.category),
     }))
   }, [categories, expenses])
+  const totalAmount = chartData.reduce((sum, item) => sum + item.amount, 0)
 
   if (chartData.length === 0) {
     return (
@@ -37,6 +38,12 @@ function ExpenseChart({
         </div>
       </div>
       <div className="chart-wrapper">
+        <div className="chart-center-label" aria-label="Overall expense total">
+          <span className="chart-center-label-title">Overall</span>
+          <strong className="chart-center-label-value">
+            {formatCurrency(totalAmount, currencyCode, { compact: true })}
+          </strong>
+        </div>
         <ResponsiveContainer width="100%" height={320}>
           <PieChart>
             <Pie

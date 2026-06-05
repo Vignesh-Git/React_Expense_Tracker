@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { CURRENCIES } from '../../lib/currency.js'
 import './VoiceExpenseDialog.css'
 
 function getToday() {
@@ -10,6 +11,7 @@ function VoiceExpenseDialog({
   transcript,
   parseResult,
   categories = [],
+  currencyCode,
   source = 'voice',
   onConfirm,
   onClose,
@@ -18,10 +20,13 @@ function VoiceExpenseDialog({
   const [draft, setDraft] = useState({
     name: '',
     amount: '',
+    currencyCode,
     category: categories[0] ?? '',
     date: getToday(),
     paid: false,
   })
+  const [submitError, setSubmitError] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -42,11 +47,13 @@ function VoiceExpenseDialog({
     setDraft({
       name: expense?.name ?? '',
       amount: expense?.amount ? String(expense.amount) : '',
+      currencyCode: expense?.currencyCode ?? currencyCode,
       category: expense?.category ?? categories[0] ?? '',
       date: expense?.date ?? getToday(),
       paid: Boolean(expense?.paid),
     })
-  }, [categories, open, parseResult])
+    setSubmitError('')
+  }, [categories, currencyCode, open, parseResult])
 
   const amountValue = Number(draft.amount)
   const validationError = useMemo(() => {
@@ -66,16 +73,25 @@ function VoiceExpenseDialog({
     setDraft((current) => ({ ...current, [field]: value }))
   }
 
-  const handleConfirm = () => {
-    if (!canConfirm) return
+  const handleConfirm = async () => {
+    if (!canConfirm || isSaving) return
 
-    onConfirm({
-      name: draft.name.trim(),
-      amount: Math.round(amountValue * 100) / 100,
-      category: draft.category,
-      date: draft.date,
-      paid: draft.paid,
-    })
+    setIsSaving(true)
+    setSubmitError('')
+    try {
+      await onConfirm({
+        name: draft.name.trim(),
+        amount: Math.round(amountValue * 100) / 100,
+        currencyCode: draft.currencyCode,
+        category: draft.category,
+        date: draft.date,
+        paid: draft.paid,
+      })
+    } catch (error) {
+      setSubmitError(error.message || 'Could not convert this expense. Please try again.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -135,6 +151,20 @@ function VoiceExpenseDialog({
             </label>
 
             <label className="voice-edit-field">
+              <span>Currency</span>
+              <select
+                value={draft.currencyCode}
+                onChange={(event) => updateDraft('currencyCode', event.target.value)}
+              >
+                {CURRENCIES.map((currency) => (
+                  <option key={currency.code} value={currency.code}>
+                    {currency.symbol} - {currency.code}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="voice-edit-field">
               <span>Category</span>
               <select
                 value={draft.category}
@@ -152,6 +182,7 @@ function VoiceExpenseDialog({
               <span>Date</span>
               <input
                 type="date"
+                max={getToday()}
                 value={draft.date}
                 onChange={(event) => updateDraft('date', event.target.value)}
               />
@@ -171,6 +202,11 @@ function VoiceExpenseDialog({
               {validationError}
             </p>
           )}
+          {submitError && (
+            <p className="voice-edit-hint voice-edit-hint--error" role="alert">
+              {submitError}
+            </p>
+          )}
         </section>
 
         <footer className="voice-dialog-actions">
@@ -181,9 +217,9 @@ function VoiceExpenseDialog({
             type="button"
             className="primary-button"
             onClick={handleConfirm}
-            disabled={!canConfirm}
+            disabled={!canConfirm || isSaving}
           >
-            Add expense
+            {isSaving ? 'Converting...' : 'Add expense'}
           </button>
         </footer>
       </div>
